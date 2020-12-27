@@ -1,0 +1,14 @@
+.myButton {
+    transition: ease-in-out 0.2s;
+    border: none;
+    background: none;
+}
+
+.myButton:hover {
+    transform: scale(1.2);
+}
+
+.myButton:focus {
+    box-shadow: none;
+    outline: none;
+}
