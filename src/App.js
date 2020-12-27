@@ -64,7 +64,8 @@ class App extends React.Component{
   }
 
   render(){
-      const {images} = this.state
+      const {images, showPopUp} = this.state;
+      const showPopUpButton = showPopUp ? 'hidden': 'show';
       return(
         <div className="App">
           <button className="prev button" onClick={this.prevPic}>
@@ -82,13 +83,12 @@ class App extends React.Component{
           <button className="next button" onClick={this.nextPic}>
             <img src={next} /> 
           </button>
-          {
-            this.state.showPopUp ? (
-            <PopUp toggle={this.togglePopUp} />
-            ) : <button className="open-pop-up" onClick={this.togglePopUp}>
+
+          <PopUp toggle={this.togglePopUp} show={showPopUp}/>
+
+          <button className={`button open-pop-up ${showPopUpButton}`} onClick={this.togglePopUp}>
               <img src={gift} alt="pop-up-logo"/> 
-            </button>
-          }
+          </button>
         </div>
       )
   }

@@ -13,14 +13,62 @@
   right: 20px;
 }
 
-.button {
+.open-pop-up:hover {
+  transform: scale(1.2)
+}
+
+.hidden {
+    animation: fadeOut 1s;
+    animation-fill-mode: both;
+    -moz-animation: fadeOut 1s;
+    -moz-animation-fill-mode: both;
+    -webkit-animation: fadeOut 1s;
+    -webkit-animation-fill-mode: both;
+}
+
+.show {
+    animation: fadeIn 1s;
+    animation-fill-mode: both;
+    -moz-animation: fadeIn 1s;
+    -moz-animation-fill-mode: both;
+    -webkit-animation: fadeIn 1s;
+    -webkit-animation-fill-mode: both;
+}
+
+@keyframes fadeOut {
+    from {
+      transform: scale(1);
+      opacity: 1;
+    }
+    to {
+      transform: scale(0);
+      opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+      transform: scale(0);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+}
+
+.next, .prev {
   width: 10%;
   border: 0;
   background: none;
 }
 
+.button {  
+  transition: ease-in-out 0.2s;
+}
+
 .button:hover {
-  background: rgba(0,0,0, 0.7);
+  transform: scale(1.2);
 }
 
 .button:focus {
@@ -28,7 +76,7 @@
   box-shadow: none;
 }
 
-.button img {
+.prev img, .next img {
   width: 50%;
 }
 
@@ -50,3 +98,12 @@
 .open-pop-up img {
   height: 50px;
 }
+
+.preload * {
+  animation: none !important;
+  -webkit-animation: none !important;
+  -moz-animation: none !important;
+  -ms-animation: none !important;
+  -o-animation: none !important;
+}
+
