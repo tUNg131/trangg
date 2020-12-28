@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Img from './components/img';
+import Img, { ImgList } from './components/img';
 import PopUp from './components/popup';
 import { Button, PopUpButton } from './components/btn';
 
@@ -31,7 +31,7 @@ class App extends React.Component{
     const arrayModules = this.importAll(require.context('./data/', false, /\.(png|jpe?g|svg)$/));
     return arrayModules.map((module, index) => {
       return {
-        id: `img-key ${index}`,
+        id: `img-${index}`,
         src: module.default,
         angle: getRandomInt(20)
       }
@@ -70,14 +70,13 @@ class App extends React.Component{
 
   render(){
       const {images, showPopUp} = this.state;
-      const showPopUpButton = showPopUp ? 'hidden': 'show';
       return(
         <div className="App">
           <Button addClass="hoverable" id="prev" onClick={this.prevPic}>
             <img src={next} style={{width: "50%", transform: "rotate(180deg)"}} />
           </Button>
 
-          <div className="images-wrapper">
+          {/* <div className="images-wrapper">
             {
               images.map(
                 image => {
@@ -85,7 +84,9 @@ class App extends React.Component{
                 }
               )
             }
-          </div>
+          </div> */}
+
+          <ImgList images={images.filter((image, index) => index !== images.length-1)} />
 
           <Button addClass="hoverable" id="next" onClick={this.nextPic}>
             <img src={next} style={{width: "50%"}} />

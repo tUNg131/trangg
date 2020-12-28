@@ -1,5 +1,7 @@
-import React from 'react';
-import './img.css'
+import { Component } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+
+import './img.css';
 
 function getStyle(angle) {
     return {
@@ -7,7 +9,7 @@ function getStyle(angle) {
     }
   }
   
-class Img extends React.Component {
+class Img extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,3 +37,27 @@ class Img extends React.Component {
 }
 
 export default Img;
+
+export function ImgList ({images}) {
+    return(
+        <TransitionGroup className="image-list">
+            {images.map(({src, angle, id}) => (
+                    <CSSTransition
+                        key={`animation-for-${id}`}
+                        timeout={1600}
+                        classNames="image"
+                    >
+                        <img 
+                            className="image" 
+                            src={src}
+                            style={{
+                                transform: `translate(-50%,-50%) rotate(${angle}deg)`
+                            }}
+                            alt="pic"
+                        />
+                    </CSSTransition>
+                )
+            )}
+        </TransitionGroup>
+    )
+}

@@ -7,3 +7,27 @@
     border: 1px solid black;
 }
 
+.image-enter {
+    opacity: 0;
+
+}
+
+.image-enter-active {
+    opacity: 1;
+    transition: opacity 700ms 600ms;
+}
+
+.image-exit {
+    opacity: 1;
+}
+
+.image-exit-active {
+    opacity: 0;
+    transition: opacity 300ms;
+}
+
+.image-list {
+    flex-grow: 1;
+    position: relative;
+    height: 100vh;
+}
