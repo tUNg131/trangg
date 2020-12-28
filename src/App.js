@@ -15,6 +15,10 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max)) * sign;
 }
 
+funciton getNewCachedImgSrc() {
+
+}
+
 class App extends React.Component{
   constructor(props){
     super(props);
@@ -68,29 +72,32 @@ class App extends React.Component{
     });
   }
 
+  newImage() {
+    var modifiedList = [...this.state.srcList];
+    const imgSrc = modifiedList.pop();
+    this.setState(
+      {
+        imgSrc: imgSrc,
+        srcList: modifiedList
+      });
+  }
+
+  fillSrcList() {
+    const finalLength = 5;
+    const {srcList} = this.state;
+    if(srcList.length < finalLength) {
+      var modifiedList = [...srcList].push(getNewCachedImgSrc());
+      this.setState({srcList: modifiedList})
+      this.fillSrcList();
+    }
+  }
+
   render(){
       const {images, showPopUp} = this.state;
       return(
         <div className="App">
-          <Button addClass="hoverable" id="prev" onClick={this.prevPic}>
-            <img src={next} style={{width: "50%", transform: "rotate(180deg)"}} />
-          </Button>
+          
 
-          {/* <div className="images-wrapper">
-            {
-              images.map(
-                image => {
-                  return <Img key={image.id} src={image.src} angle={image.angle}/>
-                }
-              )
-            }
-          </div> */}
-
-          <ImgList images={images.filter((image, index) => index !== images.length-1)} />
-
-          <Button addClass="hoverable" id="next" onClick={this.nextPic}>
-            <img src={next} style={{width: "50%"}} />
-          </Button>
 
           <PopUp show={showPopUp}>
             <h1>This is the PopUp!</h1>
