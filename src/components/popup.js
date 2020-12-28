@@ -1,19 +1,31 @@
 import React from 'react';
+import { CSSTransition } from 'react-transition-group';
+
+import './animation.css';
 import './popup.css';
 
-class PopUp extends React.Component {
-    render() {
-        const {toggle, show} = this.props
-        const visible = show ? 'popshow' : 'pophidden';
-        return(
-            <div className={`pop-up-wrapper ${visible}`}>
-                <div className="pop-up-inner">
-                    <h1>This is a pop up!</h1>
-                    <button className="close-popup" onClick={toggle}>Click here to close me!</button>
-                </div>
+function PopUp({ show, children }) {
+    return(
+        <CSSTransition
+            in={show}
+            timeout={1000}
+            classNames="fade"
+            unmountOnExit
+        >
+        <div className="pop-up-outer">
+            <CSSTransition
+                in={show}
+                timeout={1000}
+                classNames="zoom"
+                unmountOnExit
+            >
+            <div className="pop-up-inner">
+                {children}
             </div>
-        )
-    }
+            </CSSTransition>   
+        </div>
+        </CSSTransition>
+    )
 }
 
 export default PopUp;

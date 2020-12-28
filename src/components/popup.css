@@ -1,10 +1,4 @@
-.close-popup {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-.pop-up-wrapper {
+.pop-up-outer {
     position: fixed;
     width: 100%;
     height: 100%;
@@ -26,52 +20,6 @@
     top: 25%;
     bottom: 25%;
     margin: auto;
-}
-
-.pophidden {
-    animation: fadeOut 1s;
-    animation-fill-mode: both;
-    -moz-animation: fadeOut 1s;
-    -moz-animation-fill-mode: both;
-    -webkit-animation: fadeOut 1s;
-    -webkit-animation-fill-mode: both;
-}
-
-.popshow {
-    animation: fadeIn 1s;
-    animation-fill-mode: both;
-    -moz-animation: fadeIn 1s;
-    -moz-animation-fill-mode: both;
-    -webkit-animation: fadeIn 1s;
-    -webkit-animation-fill-mode: both;
-}
-
-@keyframes fadeOut {
-    0% {
-        opacity: 1;
-        z-index: auto;
-    }
-    50% {
-        opacity: 0;
-        z-index: auto;
-    }
-    100% {
-        opacity: 0;
-        z-index: -1;
-    }
-}
-
-@keyframes fadeIn {
-    0% {
-        z-index: -1;
-        opacity: 0;
-    }
-    50% {
-        z-index: auto;
-        opacity: 0;
-    }
-    100% {
-        z-index: auto;
-        opacity: 1;
-    }
+    border: 2px solid black;
+    border-radius: 35px;
 }
