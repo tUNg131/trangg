@@ -1,14 +1,25 @@
 .myButton {
-    transition: ease-in-out 0.2s;
     border: none;
     background: none;
-}
-
-.myButton:hover {
-    transform: scale(1.2);
 }
 
 .myButton:focus {
     box-shadow: none;
     outline: none;
 }
+
+.open-pop-up {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    border: 0;
+    background: none;
+    z-index: 2;
+    padding: 0px;
+  }
+  
+.open-pop-up img {
+    height: 50px;
+}
+
+

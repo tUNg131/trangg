@@ -1,15 +1,33 @@
 import React from 'react';
-import './btn.css';
+import { CSSTransition } from 'react-transition-group';
 
-class Button extends React.Component {
+import './animation.css';
+import './btn.css';
+import gift from '../static/gift2.png';
+
+export class PopUpButton extends React.Component {
     render() {
-        const {className, children, ...rest} = this.props;
+        const {in: inProp, onClick} = this.props;
         return(
-            <button className={`${(className) ? className: 'myButton'}`} {...rest}>
-                {children}
-            </button>
+            <CSSTransition
+                in={inProp}
+                timeout={1000}
+                classNames="fade-zoom-rotate"
+                unmountOnExit
+            >
+                <button className={`open-pop-up myButton ${(inProp)?'hoverable':''}`} onClick={onClick}>
+                    <img src={gift} alt="pop-up-logo"/> 
+                </button>
+            </CSSTransition>
         )
     }
 }
 
-export default Button;
+export function Button({children, className, addClass, ...rest}) {
+    const cls = className || ((addClass) ? `myButton ${addClass}`: 'myButton');
+    return(
+        <button className={cls} {...rest}>{children}</button>
+    )
+}
+
+
