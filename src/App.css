@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Mr+De+Haviland');
+
 .App {
   text-align: center;
   display: flex;
@@ -7,78 +9,29 @@
   background-size: 70% auto;
 }
 
-.open-pop-up {
-  position: fixed;
-  top: 10px;
-  right: 20px;
-  border: 0;
-  background: none;
-}
-
-.open-pop-up:hover {
-  transform: scale(1.2)
-}
-
-.open-pop-up img {
-  height: 50px;
-}
-
-.hidden {
-    animation: fadeOut 1s;
-    animation-fill-mode: both;
-    -moz-animation: fadeOut 1s;
-    -moz-animation-fill-mode: both;
-    -webkit-animation: fadeOut 1s;
-    -webkit-animation-fill-mode: both;
-}
-
-.show {
-    animation: fadeIn 1s;
-    animation-fill-mode: both;
-    -moz-animation: fadeIn 1s;
-    -moz-animation-fill-mode: both;
-    -webkit-animation: fadeIn 1s;
-    -webkit-animation-fill-mode: both;
-}
-
-@keyframes fadeOut {
-    from {
-      transform: scale(1);
-      opacity: 1;
-    }
-    to {
-      transform: scale(0);
-      opacity: 0;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-      transform: scale(0);
-      opacity: 0;
-    }
-    to {
-      transform: scale(1);
-      opacity: 1;
-    }
-}
-
-#next, #prev {
-  width: 10%;
-}
-
 .images-wrapper{
   flex-grow: 1;
   position: relative;
   height: 100vh;
 }
 
-
-.preload * {
-  animation: none !important;
-  -webkit-animation: none !important;
-  -moz-animation: none !important;
-  -ms-animation: none !important;
-  -o-animation: none !important;
+.close-pop-up {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 0;
 }
 
+#next, #prev {
+    width: 10%;
+    z-index: 2;
+}
+
+h1 { 
+  font-family: "Mr De Haviland";
+  font-size: 50px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 23px;
+}

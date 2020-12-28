@@ -1,9 +1,14 @@
 import React from 'react';
-import './App.css';
+
 import Img from './components/img';
 import PopUp from './components/popup';
+import { Button, PopUpButton } from './components/btn';
+
+import './App.css';
+import './components/animation.css';
+
 import next from './static/next.png';
-import gift from './static/gift2.png';
+import heart from './static/heart-icon1.png'; 
 
 function getRandomInt(max) {
   const sign = (Math.random() > 0.5) ? -1 : 1;
@@ -68,9 +73,10 @@ class App extends React.Component{
       const showPopUpButton = showPopUp ? 'hidden': 'show';
       return(
         <div className="App">
-          <button className="prev button" onClick={this.prevPic}>
-            <img src={next} />
-          </button>
+          <Button addClass="hoverable" id="prev" onClick={this.prevPic}>
+            <img src={next} style={{width: "50%", transform: "rotate(180deg)"}} />
+          </Button>
+
           <div className="images-wrapper">
             {
               images.map(
@@ -80,15 +86,18 @@ class App extends React.Component{
               )
             }
           </div>
-          <button className="next button" onClick={this.nextPic}>
-            <img src={next} /> 
-          </button>
 
-          <PopUp toggle={this.togglePopUp} show={showPopUp}/>
+          <Button addClass="hoverable" id="next" onClick={this.nextPic}>
+            <img src={next} style={{width: "50%"}} />
+          </Button>
 
-          <button className={`button open-pop-up ${showPopUpButton}`} onClick={this.togglePopUp}>
-              <img src={gift} alt="pop-up-logo"/> 
-          </button>
+          <PopUp show={showPopUp}>
+            <h1>This is the PopUp!</h1>
+            <Button addClass="close-pop-up hoverable" onClick={this.togglePopUp}>
+              <img src={heart} style={{width: "50px"}} />
+            </Button>
+          </PopUp>
+          <PopUpButton in={!showPopUp} onClick={this.togglePopUp} />
         </div>
       )
   }
