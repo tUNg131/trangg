@@ -9,7 +9,6 @@ import './components/animation.css';
 
 import heart from './static/heart-icon1.png';
 import axios from 'axios';
-import src from '*.avif';
 
 function getRandomInt(max) {
   const sign = (Math.random() > 0.5) ? -1 : 1;
@@ -40,7 +39,7 @@ class App extends React.Component{
       srcList: [],
       angle: getRandomInt(15),
       showPopUp: false,
-      buttonEnabled: false
+      buttonEnabled: true
     }
     this.togglePopUp = this.togglePopUp.bind(this);
     this.newImage = this.newImage.bind(this);
@@ -88,30 +87,34 @@ class App extends React.Component{
 
   render(){
       const {srcList, showPopUp, angle, buttonEnabled} = this.state;
+      console.log(srcList);
+      console.log(`Button enabled: ${buttonEnabled}`);
       var hasImage = true;
-      if (srcList === undefined || srcList.length == 0) {
-        hasImage = false
+      if (srcList === undefined || srcList.length === 0) {
+        hasImage = false;
+        console.log(hasImage)
       }
       return(
         <div className="App">
-          {/* { (hasImage) ? 
+          { (hasImage) ?
             <TransitionGroup className="image-container">
               <CSSTransition
                 key={`image-${srcList[0].id}`} // to trigger transition everytime it updates
-                timeout={1600}
+                timeout={500}
                 classNames="image"
-                // onExit={this.disableButton}
-                onEntered={this.enableButton}
+                unmountOnExit
               >
                 <img 
                   className="image" 
-                  src={srcList[0]} 
+                  src={srcList[0].src} 
                   alt="cute cat" 
                   style={{transform: `translate(-50%, -50%) rotate(${angle}deg)`}}
-                  onClick={(buttonEnabled) ? this.newImage: null} />
+                  onClick={(buttonEnabled) ? this.newImage: null} 
+                  onAnimationStart={this.disableButton}
+                  onAnimationEnd={this.enableButton}/>
               </CSSTransition>
-            </TransitionGroup> : null
-          } */}
+            </TransitionGroup> : "hihi"
+          }
           <PopUp show={showPopUp}>
             <h1>This is the PopUp!</h1>
             <Button addClass="close-pop-up hoverable" onClick={this.togglePopUp}>
