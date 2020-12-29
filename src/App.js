@@ -104,7 +104,7 @@ class App extends React.Component{
                   onClick={(buttonEnabled) ? this.newImage: null} 
                 />
               </CSSTransition>
-            </TransitionGroup> : 
+            </TransitionGroup> : null
           }
           <PopUp show={showPopUp}>
             <h1>This is the PopUp!</h1>
