@@ -1,69 +1,51 @@
 import React from 'react';
-
-import Img, { ImgList } from './components/img';
 import PopUp from './components/popup';
 import { Button, PopUpButton } from './components/btn';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import './App.css';
+import './components/img.css';
 import './components/animation.css';
 
-import next from './static/next.png';
-import heart from './static/heart-icon1.png'; 
+import heart from './static/heart-icon1.png';
+import axios from 'axios';
+import src from '*.avif';
 
 function getRandomInt(max) {
   const sign = (Math.random() > 0.5) ? -1 : 1;
   return Math.floor(Math.random() * Math.floor(max)) * sign;
 }
 
-funciton getNewCachedImgSrc() {
+async function getNewCachedImgSrc() {
+  try {
+    axios.defaults.headers.common['x-api-key'] = "b3921cad-6daf-47e5-b6b9-6d6f8d241d59"
 
+    let response = await axios.get('https://api.thecatapi.com/v1/images/search', { params: { limit:5, size:"full" } })
+
+    console.log(response.data)
+    const srcList = response.data.map((image) => {
+      new Image().src = image.url
+      return {src: image.url, id: image.id}
+    });
+    return srcList
+  } catch(err) {
+    console.log(err)
+  }
 }
 
 class App extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      images: this.populatedImages(),
-      showPopUp: false
+      srcList: [],
+      angle: getRandomInt(15),
+      showPopUp: false,
+      buttonEnabled: false
     }
-    this.nextPic = this.nextPic.bind(this);
-    this.prevPic = this.prevPic.bind(this);
     this.togglePopUp = this.togglePopUp.bind(this);
-  }
-
-  populatedImages() {
-    const arrayModules = this.importAll(require.context('./data/', false, /\.(png|jpe?g|svg)$/));
-    return arrayModules.map((module, index) => {
-      return {
-        id: `img-${index}`,
-        src: module.default,
-        angle: getRandomInt(20)
-      }
-    })
-  }
-
-  importAll(r) {
-      return r.keys().map(r);
-  }
-
-  nextPic() {
-    var arrayData = [...this.state.images];
-    var lastImg = arrayData.pop();
-    lastImg.angle = getRandomInt(20);
-    arrayData.unshift(lastImg);
-    this.setState({
-      images: arrayData
-    });
-  }
-
-  prevPic() {
-    var arrayData = [...this.state.images];
-    var firstImg = arrayData.shift();
-    firstImg.angle = getRandomInt(20);
-    arrayData.push(firstImg);
-    this.setState({
-      images: arrayData
-    });
+    this.newImage = this.newImage.bind(this);
+    this.disableButton = this.disableButton.bind(this);
+    this.enableButton = this.enableButton.bind(this);
   }
 
   togglePopUp() {
@@ -74,31 +56,62 @@ class App extends React.Component{
 
   newImage() {
     var modifiedList = [...this.state.srcList];
-    const imgSrc = modifiedList.pop();
-    this.setState(
-      {
-        imgSrc: imgSrc,
-        srcList: modifiedList
-      });
+    modifiedList.shift();
+    this.setState({srcList: modifiedList, angle: getRandomInt(15)});
   }
 
-  fillSrcList() {
-    const finalLength = 5;
+  async fillSrcList() {
+    const lowerLimit = 5;
     const {srcList} = this.state;
-    if(srcList.length < finalLength) {
-      var modifiedList = [...srcList].push(getNewCachedImgSrc());
-      this.setState({srcList: modifiedList})
+    if(srcList.length < lowerLimit) {
+      this.setState({srcList: [...srcList, ...await getNewCachedImgSrc()]}, console.log(this.state.srcList))
       this.fillSrcList();
     }
   }
 
+  componentDidMount() {
+    this.fillSrcList();
+  }
+
+  componentDidUpdate() {
+    this.fillSrcList();
+  }
+
+  disableButton() {
+    this.setState({buttonEnabled: false})
+  }
+
+  enableButton() {
+    console.log("button enabled")
+    this.setState({buttonEnabled: true})
+  }
+
   render(){
-      const {images, showPopUp} = this.state;
+      const {srcList, showPopUp, angle, buttonEnabled} = this.state;
+      var hasImage = true;
+      if (srcList === undefined || srcList.length == 0) {
+        hasImage = false
+      }
       return(
         <div className="App">
-          
-
-
+          {/* { (hasImage) ? 
+            <TransitionGroup className="image-container">
+              <CSSTransition
+                key={`image-${srcList[0].id}`} // to trigger transition everytime it updates
+                timeout={1600}
+                classNames="image"
+                // onExit={this.disableButton}
+                onEntered={this.enableButton}
+              >
+                <img 
+                  className="image" 
+                  src={srcList[0]} 
+                  alt="cute cat" 
+                  style={{transform: `translate(-50%, -50%) rotate(${angle}deg)`}}
+                  onClick={(buttonEnabled) ? this.newImage: null} />
+              </CSSTransition>
+            </TransitionGroup> : null
+          } */}
           <PopUp show={showPopUp}>
             <h1>This is the PopUp!</h1>
             <Button addClass="close-pop-up hoverable" onClick={this.togglePopUp}>

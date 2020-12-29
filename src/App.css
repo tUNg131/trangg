@@ -7,6 +7,7 @@
   background-image: url(./static/Snow2.jpg);
   background-repeat: repeat;
   background-size: 70% auto;
+  height: 100vh;
 }
 
 .images-wrapper{
