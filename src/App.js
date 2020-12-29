@@ -43,8 +43,6 @@ class App extends React.Component{
     }
     this.togglePopUp = this.togglePopUp.bind(this);
     this.newImage = this.newImage.bind(this);
-    this.disableButton = this.disableButton.bind(this);
-    this.enableButton = this.enableButton.bind(this);
   }
 
   togglePopUp() {
@@ -54,9 +52,14 @@ class App extends React.Component{
   }
 
   newImage() {
-    var modifiedList = [...this.state.srcList];
-    modifiedList.shift();
-    this.setState({srcList: modifiedList, angle: getRandomInt(15)});
+    this.setState({buttonEnabled: false}, // disable button before doing anything else
+      () => {
+        var modifiedList = [...this.state.srcList];
+        modifiedList.shift();
+        this.setState({srcList: modifiedList, angle: getRandomInt(15)}, 
+          () => {this.setState({buttonEnabled: true}); // enable the button again
+        });
+      });
   }
 
   async fillSrcList() {
@@ -76,19 +79,8 @@ class App extends React.Component{
     this.fillSrcList();
   }
 
-  disableButton() {
-    this.setState({buttonEnabled: false})
-  }
-
-  enableButton() {
-    console.log("button enabled")
-    this.setState({buttonEnabled: true})
-  }
-
   render(){
       const {srcList, showPopUp, angle, buttonEnabled} = this.state;
-      console.log(srcList);
-      console.log(`Button enabled: ${buttonEnabled}`);
       var hasImage = true;
       if (srcList === undefined || srcList.length === 0) {
         hasImage = false;
@@ -100,7 +92,7 @@ class App extends React.Component{
             <TransitionGroup className="image-container">
               <CSSTransition
                 key={`image-${srcList[0].id}`} // to trigger transition everytime it updates
-                timeout={500}
+                timeout={700}
                 classNames="image"
                 unmountOnExit
               >
@@ -110,10 +102,9 @@ class App extends React.Component{
                   alt="cute cat" 
                   style={{transform: `translate(-50%, -50%) rotate(${angle}deg)`}}
                   onClick={(buttonEnabled) ? this.newImage: null} 
-                  onAnimationStart={this.disableButton}
-                  onAnimationEnd={this.enableButton}/>
+                />
               </CSSTransition>
-            </TransitionGroup> : "hihi"
+            </TransitionGroup> : 
           }
           <PopUp show={showPopUp}>
             <h1>This is the PopUp!</h1>
