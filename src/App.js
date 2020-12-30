@@ -10,7 +10,7 @@ import './components/animation.css';
 import heart from './static/heart-icon1.png';
 import axios from 'axios';
 
-import { SnowFlake1, SnowFlake2 } from './components/snowflake';
+import { SnowFall } from './components/snowflake';
 
 function getRandomInt(max) {
   const sign = (Math.random() > 0.5) ? -1 : 1;
@@ -41,10 +41,12 @@ class App extends React.Component{
       srcList: [],
       angle: getRandomInt(15),
       showPopUp: false,
-      buttonEnabled: true
+      buttonEnabled: true,
+      snow: false
     }
     this.togglePopUp = this.togglePopUp.bind(this);
     this.newImage = this.newImage.bind(this);
+    this.toggleSnow = this.toggleSnow.bind(this);
   }
 
   togglePopUp() {
@@ -81,6 +83,11 @@ class App extends React.Component{
     this.fillSrcList();
   }
 
+  toggleSnow() {
+    console.log("haha")
+    this.setState({snow: !this.state.snow})
+  }
+
   render() {
       const {srcList, showPopUp, angle, buttonEnabled} = this.state;
       var hasImage = true;
@@ -90,8 +97,8 @@ class App extends React.Component{
       }
       return(
         <div className="App">
-          
-          <SnowFlake1 duration={10000} scale={0.2} spin={100} left={100}/>
+
+          <SnowFall />
 
           <PopUp show={showPopUp}>
             <h1>This is the PopUp!</h1>
