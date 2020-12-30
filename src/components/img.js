@@ -3,8 +3,6 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import './img.css';
 
-
-
 function getStyle() {
     return {
         transform: `translate(-50%,-50%) rotate(${getRandomInt}deg)`
