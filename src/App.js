@@ -91,7 +91,7 @@ class App extends React.Component{
       return(
         <div className="App">
           
-          <SnowFlake1 duration={5000} scale={1} spin={100} />
+          <SnowFlake1 duration={10000} scale={0.2} spin={100} left={100}/>
 
           <PopUp show={showPopUp}>
             <h1>This is the PopUp!</h1>
