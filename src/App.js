@@ -10,6 +10,8 @@ import './components/animation.css';
 import heart from './static/heart-icon1.png';
 import axios from 'axios';
 
+import { SnowFlake1, SnowFlake2 } from './components/snowflake';
+
 function getRandomInt(max) {
   const sign = (Math.random() > 0.5) ? -1 : 1;
   return Math.floor(Math.random() * Math.floor(max)) * sign;
@@ -79,7 +81,7 @@ class App extends React.Component{
     this.fillSrcList();
   }
 
-  render(){
+  render() {
       const {srcList, showPopUp, angle, buttonEnabled} = this.state;
       var hasImage = true;
       if (srcList === undefined || srcList.length === 0) {
@@ -88,24 +90,9 @@ class App extends React.Component{
       }
       return(
         <div className="App">
-          { (hasImage) ?
-            <TransitionGroup className="image-container">
-              <CSSTransition
-                key={`image-${srcList[0].id}`} // to trigger transition everytime it updates
-                timeout={700}
-                classNames="image"
-                unmountOnExit
-              >
-                <img 
-                  className="image" 
-                  src={srcList[0].src} 
-                  alt="cute cat" 
-                  style={{transform: `translate(-50%, -50%) rotate(${angle}deg)`}}
-                  onClick={(buttonEnabled) ? this.newImage: null} 
-                />
-              </CSSTransition>
-            </TransitionGroup> : null
-          }
+          
+          <SnowFlake1 duration={5000} scale={1} spin={100} />
+
           <PopUp show={showPopUp}>
             <h1>This is the PopUp!</h1>
             <Button addClass="close-pop-up hoverable" onClick={this.togglePopUp}>

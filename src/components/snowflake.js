@@ -23,11 +23,11 @@ class SnowFlake extends Component {
 
         translateX = (translateX) ? `translateX(${translateX})`: '';
         translateY = (translateY) ? `translateY(${translateY})`: 'translateY(100vh)';
-        scale = (zoom) ? `scale(${zoom})`: '';
+        scale = (scale) ? `scale(${scale})`: '';
         const rotate = `rotate(${spin*duration}deg)`;// spin is the angular speed
 
         const defaultStyle = {
-            position: absolute,
+            position: "absolute",
             // z-index 
         }
 
@@ -37,7 +37,7 @@ class SnowFlake extends Component {
             },
             fall: {
                 transform: `${translateX} ${translateY} ${scale} ${rotate}`,
-                transition: `ease-in-out ${duration}`
+                transition: `ease-in-out ${duration}ms`
             }, // onAnimationEnd change to ended
             melt: {
                 opacity: 0,
@@ -45,6 +45,12 @@ class SnowFlake extends Component {
             } // End if clickedF
         }
         return {...defaultStyle, ...addStyle[this.state.snowState]}
+    }
+
+    componentDidMount() {
+        this.setState({snowState: "start"}, 
+            this.setState({snowState: "fall"})
+        )
     }
 
     render() {
@@ -67,3 +73,4 @@ export class SnowFlake1 extends SnowFlake {
 export class SnowFlake2 extends SnowFlake {
     src = snowFlake2
 }
+
