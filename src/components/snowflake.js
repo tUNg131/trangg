@@ -1,102 +1,44 @@
-import { Component, createRef } from "react";
-import { Transition } from "react-transition-group";
+import { Component } from "react";
+import { Transition, TransitionGroup } from "react-transition-group";
 
 import snowFlake1 from '../static/snowFlake1.png';
 import snowFlake2 from '../static/snowFlake2.png';
+import './snow.css';
 
-// class SnowFlake extends Component {
-//     src = ''
+import {v4 as uuid} from 'uuid';
 
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             snowState: "start"
-//         }
-//         this.clicked = this.clicked.bind(this);
-//     }
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
 
-//     clicked() {
-//         this.setState({snowState: "melt"}) // Start melting animation
-//     }
-
-//     getStyle() {
-//         var {duration, translateX, translateY, scale, spin} = this.props;
-
-//         translateX = (translateX) ? `translateX(${translateX})`: '';
-//         translateY = (translateY) ? `translateY(${translateY})`: 'translateY(100vh)';
-//         scale = (scale) ? `scale(${scale})`: '';
-//         const rotate = `rotate(${spin*duration}deg)`;// spin is the angular speed
-
-//         const defaultStyle = {
-//             position: "absolute",
-//             // z-index 
-//         }
-
-//         const addStyle = {
-//             start: {
-//                 transform: `${translateX} ${scale}`
-//             },
-//             fall: {
-//                 transform: `${translateX} ${translateY} ${scale} ${rotate}`,
-//                 transition: `ease-in-out ${duration}ms`
-//             }, // onAnimationEnd change to ended
-//             melt: {
-//                 opacity: 0,
-//                 transition: 'opacity 200ms'
-//             } // End if clickedF
-//         }
-//         return {...defaultStyle, ...addStyle[this.state.snowState]}
-//     }
-
-//     componentDidMount() {
-//         this.setState({snowState: "start"}, 
-//             this.setState({snowState: "fall"})
-//         )
-//     }
-
-//     render() {
-//         return(
-//             <img
-//                 src={this.src}
-//                 alt="Snow flake"
-//                 style={this.getStyle()}
-//                 onClick={this.clicked}
-//                 onAnimationEnd={(this.state.snowState === "fall") ? this.clicked: null}
-//             />
-//         )
-//     }
-// }
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
 
 class SnowFlake extends Component {
     src = ''
 
     constructor(props) {
         super(props);
-        this.state = {
-            in: false
-        }
-        this.clicked = this.clicked.bind(this);
-        this.toggle = this.toggle.bind(this);
-        this.img = createRef();
-    }
 
-    toggle() {
-        this.setState({in: !this.state.in})
-    }
-
-    clicked() {
-        this.setState({in: false}) // pull "in" prop to false to go to the exiting.
+        this.Img = null;
+        this.setImgRef = element => {
+            this.Img = element
+        };
     }
 
     getStyle(state) {
-        var {duration, left, scale, spin} = this.props;
+        const {duration, left, scale, spin} = this.props;
+        const height = 71*(scale || 1); //default height = 71px
 
         const defaultStyle = {
             position: "absolute",
             left: left,
-            top: "-71px",
-            width: "64px",
-            // z-index 
+            top: `-${height}px`, // offset == height
+            height: `${height}px`,
+            zIndex: 1
         }
 
         const addStyle = {
@@ -111,47 +53,46 @@ class SnowFlake extends Component {
                 transition: `transform ${duration}ms linear` 
             }, 
             exiting: {
-                transform: this.getCurrentTransform(),
+                transform: this.getCurrentTransform(), // not a good solution because will make it glitches
                 opacity: 0,
-                transition: 'opacity 700ms'
+                transition: 'transform 300ms, opacity 700ms ease-in-out'
             }, //start melting
             exited: {
                 opacity: 0,
-                transform: 'rotate(0deg)',
-            }
+                transform: 'rotate(0deg)', 
+            } //when inProp = false
         }
 
         return {...defaultStyle, ...addStyle[state]}
     }
 
     getCurrentTransform() {
-        return (this.img.current &&
-            window.getComputedStyle(this.img.current).getPropertyValue("transform"))
+        return (this.Img &&
+            getComputedStyle(this.Img).getPropertyValue("transform"))
     }
 
     render() {
-        const {in: inProp} = this.state
+        const {in: inProp, toggle: toggle, duration} = this.props
         return(
-            <div style={{height: "100vh"}}>
-            <Transition in={inProp} 
+            <Transition 
+                in={inProp} 
                 timeout={{
                     appear: 0,
-                    enter: 10000,
+                    enter: duration,
                     exit: 700
                 }}
-                onEntered={this.clicked}>
+                onEntered={toggle}
+            >
                 {state => (
                     <img
-                        ref={this.img}
+                        ref={this.setImgRef}
                         src={this.src}
                         alt="Snow flake"
                         style={this.getStyle(state)}
-                        onClick={this.clicked}
+                        onClick={toggle}
                     />
                 )}
             </Transition>
-            <button onClick={this.toggle}>toggle</button>
-            </div>
         )
     }
 }
@@ -164,3 +105,60 @@ export class SnowFlake2 extends SnowFlake {
     src = snowFlake2
 }
 
+export class SnowFall extends Component {
+    constructor(props) {
+        super(props);
+        this.toggle = this.toggle.bind(this);
+        this.createItem = this.createItem.bind(this);
+        this.state = {
+            items: []
+        }
+    }
+
+    createItem() {
+        console.log(this.state.items);
+        this.setState({items: [
+            ...this.state.items,
+            {
+                id: uuid(),
+                duration: getRandomInt(5000, 15000), // get random duration
+                scale: getRandomArbitrary(0.5, 2), // get random scale
+                spin: getRandomInt(100, 200),// get random spin
+                left: `${getRandomInt(0, 100)}%`// get random left
+            }
+        ]}, () => {
+            setTimeout(this.createItem, 5000)
+        })
+    }
+
+
+    toggle(id) {// get rid of the item with "id" from the list
+        var items = [...this.state.items];
+        console.log(id);
+        this.setState({items: items.filter(item => !(item.id === id))}, console.log(this.state.items))
+    }
+
+    componentDidMount() {
+        this.createItem();
+    }
+
+    render() {
+        const {items} = this.state;
+        return(
+            <TransitionGroup className="snow-fall">
+                {items.map(({id, duration, scale, spin, left}) => (
+                    <SnowFlake1
+                        key={id}
+                        toggle={() => {
+                            this.toggle(id)
+                        }}
+                        duration={duration}
+                        scale={scale}
+                        spin={spin}
+                        left={left}
+                    />
+                ))}
+            </TransitionGroup>
+        )
+    }
+}
