@@ -3,9 +3,9 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import './img.css';
 
-function getStyle(angle) {
+function getStyle() {
     return {
-        transform: `translate(-50%,-50%) rotate(${angle}deg)`
+        transform: `translate(-50%,-50%) rotate(${getRandomInt}deg)`
     }
   }
   
@@ -13,7 +13,7 @@ class Img extends Component {
     constructor(props) {
         super(props);
         this.state = {
-        style: getStyle(this.props.angle)
+        style: getStyle()
         };
     }
 
@@ -28,10 +28,10 @@ class Img extends Component {
     }
 
     render() {
-        const {src} = this.props
+        const {src, ...rest} = this.props
         const {style} = this.state
         return (
-        <img className="image" src={src} style={style} alt="pics"/> 
+        <img className="image" src={src} style={style} alt="pics" {...rest}/> 
         );
     }
 }

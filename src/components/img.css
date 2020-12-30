@@ -9,12 +9,11 @@
 
 .image-enter {
     opacity: 0;
-
 }
 
 .image-enter-active {
     opacity: 1;
-    transition: opacity 700ms 600ms;
+    transition: opacity 700ms ease-in-out;
 }
 
 .image-exit {
@@ -23,7 +22,7 @@
 
 .image-exit-active {
     opacity: 0;
-    transition: opacity 300ms;
+    transition: opacity 700ms ease-in-out;
 }
 
 .image-list {
