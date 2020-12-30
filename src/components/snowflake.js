@@ -124,7 +124,7 @@ export class SnowFall extends Component {
                 duration: getRandomInt(5000, 15000), // get random duration
                 scale: getRandomArbitrary(0.5, 2), // get random scale
                 spin: getRandomInt(100, 200),// get random spin
-                left: `${getRandomInt(0, 100)}%`// get random left
+                left: `${getRandomInt(2, 98)}%`// get random left
             }
         ]}, () => {
             setTimeout(this.createItem, 1000)

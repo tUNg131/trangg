@@ -100,6 +100,25 @@ class App extends React.Component{
 
           <SnowFall />
 
+          { (hasImage) ?
+            <TransitionGroup className="image-container">
+              <CSSTransition
+                key={`image-${srcList[0].id}`} // to trigger transition everytime it updates
+                timeout={700}
+                classNames="image"
+                unmountOnExit
+              >
+                <img 
+                  className="image" 
+                  src={srcList[0].src} 
+                  alt="cute cat" 
+                  style={{transform: `translate(-50%, -50%) rotate(${angle}deg)`}}
+                  onClick={(buttonEnabled) ? this.newImage: null} 
+                />
+              </CSSTransition>
+            </TransitionGroup> : null
+          }
+
           <PopUp show={showPopUp}>
             <h1>This is the PopUp!</h1>
             <Button addClass="close-pop-up hoverable" onClick={this.togglePopUp}>
