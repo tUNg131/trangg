@@ -127,7 +127,7 @@ export class SnowFall extends Component {
                 left: `${getRandomInt(0, 100)}%`// get random left
             }
         ]}, () => {
-            setTimeout(this.createItem, 5000)
+            setTimeout(this.createItem, 1000)
         })
     }
 
@@ -162,3 +162,4 @@ export class SnowFall extends Component {
         )
     }
 }
+
