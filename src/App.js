@@ -23,10 +23,9 @@ async function getNewCachedImgSrc() {
 
     let response = await axios.get('https://api.thecatapi.com/v1/images/search', { params: { limit:5, size:"full" } })
 
-    console.log(response.data)
     const srcList = response.data.map((image) => {
       new Image().src = image.url
-      return {src: image.url, id: image.id}
+      return {src: image.url, id: image.id, height: image.height, width: image.width}
     });
     return srcList
   } catch(err) {
@@ -46,7 +45,6 @@ class App extends React.Component{
     }
     this.togglePopUp = this.togglePopUp.bind(this);
     this.newImage = this.newImage.bind(this);
-    this.toggleSnow = this.toggleSnow.bind(this);
   }
 
   togglePopUp() {
@@ -70,7 +68,7 @@ class App extends React.Component{
     const lowerLimit = 5;
     const {srcList} = this.state;
     if(srcList.length < lowerLimit) {
-      this.setState({srcList: [...srcList, ...await getNewCachedImgSrc()]}, console.log(this.state.srcList))
+      this.setState({srcList: [...srcList, ...await getNewCachedImgSrc()]})
       this.fillSrcList();
     }
   }
@@ -83,18 +81,13 @@ class App extends React.Component{
     this.fillSrcList();
   }
 
-  toggleSnow() {
-    console.log("haha")
-    this.setState({snow: !this.state.snow})
-  }
-
   render() {
       const {srcList, showPopUp, angle, buttonEnabled} = this.state;
       var hasImage = true;
       if (srcList === undefined || srcList.length === 0) {
         hasImage = false;
-        console.log(hasImage)
       }
+
       return(
         <div className="App">
 
@@ -112,7 +105,11 @@ class App extends React.Component{
                   className="image" 
                   src={srcList[0].src} 
                   alt="cute cat" 
-                  style={{transform: `translate(-50%, -50%) rotate(${angle}deg)`}}
+                  style={{
+                    width: (srcList[0].width >= srcList[0].height) ? '60vw': undefined,
+                    height: (srcList[0].width < srcList[0].height) ? '60vh': undefined,
+                    transform: `translate(-50%, -50%) rotate(${angle}deg)`
+                  }}
                   onClick={(buttonEnabled) ? this.newImage: null} 
                 />
               </CSSTransition>

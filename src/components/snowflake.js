@@ -116,7 +116,7 @@ export class SnowFall extends Component {
     }
 
     createItem() {
-        console.log(this.state.items);
+        // console.log(this.state.items);
         this.setState({items: [
             ...this.state.items,
             {
@@ -134,8 +134,8 @@ export class SnowFall extends Component {
 
     toggle(id) {// get rid of the item with "id" from the list
         var items = [...this.state.items];
-        console.log(id);
-        this.setState({items: items.filter(item => !(item.id === id))}, console.log(this.state.items))
+        // console.log(id);
+        this.setState({items: items.filter(item => !(item.id === id))})
     }
 
     componentDidMount() {
